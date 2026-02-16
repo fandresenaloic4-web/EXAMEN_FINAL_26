@@ -129,7 +129,7 @@ class Besoin {
     /**
      * Supprimer un besoin
      */
-    public function delete($id) {
+    public function mamafa($id) {
         // Supprimer d'abord les distributions associées
         $sql = "DELETE FROM distribution WHERE besoin_id = ?";
         $stmt = $this->db->prepare($sql);
