@@ -8,8 +8,8 @@
             </div>
             
             <div class="footer-links">
-                <a href="/home" class="footer-link">
-                    <i class="bi bi-house-door me-1"></i>Accueil
+                <a href="/dashboard" class="footer-link">
+                    <i class="bi bi-speedometer2 me-1"></i>Dashboard
                 </a>
                 <a href="/dashboard" class="footer-link">
                     <i class="bi bi-speedometer2 me-1"></i>Dashboard

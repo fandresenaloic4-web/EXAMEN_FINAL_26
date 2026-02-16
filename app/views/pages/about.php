@@ -126,7 +126,7 @@ $currentPage = 'about';
 
     <!-- Retour au dashboard -->
     <div class="text-center mt-5 scroll-animate">
-        <a href="/dashboard" class="btn btn-primary-custom btn-lg">
+        <a href="<?php echo url('/dashboard'); ?>" class="btn btn-primary-custom btn-lg">
             <i class="bi bi-arrow-left me-2"></i>Retour au Dashboard
         </a>
     </div>

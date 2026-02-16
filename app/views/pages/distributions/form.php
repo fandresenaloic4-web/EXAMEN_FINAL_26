@@ -15,7 +15,7 @@ $error = $_GET['error'] ?? null;
         <div>
             <h1>Nouvelle Distribution</h1>
             <p class="breadcrumb-text">
-                <a href="/distributions" class="text-decoration-none text-muted">Distributions</a>
+                <a href="<?php echo url('/distributions'); ?>" class="text-decoration-none text-muted">Distributions</a>
                 <i class="bi bi-chevron-right mx-1" style="font-size:0.7rem;"></i>
                 Créer
             </p>
@@ -111,7 +111,7 @@ $error = $_GET['error'] ?? null;
                     </div>
 
                     <div class="d-flex justify-content-between mt-4 pt-3 border-top">
-                        <a href="/distributions" class="btn btn-outline-custom">
+                        <a href="<?php echo url('/distributions'); ?>" class="btn btn-outline-custom">
                             <i class="bi bi-arrow-left"></i> Retour
                         </a>
                         <button type="submit" class="btn btn-success-custom">

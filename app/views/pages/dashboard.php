@@ -30,7 +30,7 @@ $progressMontant = $montantTotal > 0 ? round(($montantCouvert / $montantTotal) *
         </div>
     </div>
     <div>
-        <a href="/distributions/dispatch" class="btn btn-warning-custom" data-bs-toggle="tooltip" title="Distribuer automatiquement les dons aux besoins">
+        <a href="<?php echo url('/distributions/dispatch'); ?>" class="btn btn-warning-custom" data-bs-toggle="tooltip" title="Distribuer automatiquement les dons aux besoins">
             <i class="bi bi-lightning-charge"></i> Dispatch automatique
         </a>
     </div>
@@ -130,7 +130,7 @@ $progressMontant = $montantTotal > 0 ? round(($montantCouvert / $montantTotal) *
     <div class="card-header-custom">
         <h5><i class="bi bi-geo-alt-fill text-primary"></i> Situation par Ville</h5>
         <div class="d-flex align-items-center gap-3">
-            <form method="GET" action="/dashboard" class="d-flex align-items-center gap-2" id="regionFilterForm">
+            <form method="GET" action="<?php echo url('/dashboard'); ?>" class="d-flex align-items-center gap-2" id="regionFilterForm">
                 <label class="text-muted" style="font-size:0.85rem;white-space:nowrap;"><i class="bi bi-funnel me-1"></i>Filtrer par région :</label>
                 <select name="region_id" class="form-select form-select-sm" style="width:200px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);" onchange="this.form.submit()">
                     <option value="">Toutes les régions</option>
@@ -151,7 +151,7 @@ $progressMontant = $montantTotal > 0 ? round(($montantCouvert / $montantTotal) *
         <i class="bi bi-geo-alt"></i>
         <h5>Aucune ville enregistrée</h5>
         <p>Commencez par ajouter des villes et des besoins</p>
-        <a href="/villes/create" class="btn btn-primary-custom">
+        <a href="<?php echo url('/villes/create'); ?>" class="btn btn-primary-custom">
             <i class="bi bi-plus-lg"></i> Ajouter une ville
         </a>
     </div>

@@ -20,7 +20,7 @@ include(__DIR__ . '/../../layout/header.php');
             <i class="bi bi-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);"></i>
             <input type="text" id="tableSearch" class="form-control" placeholder="Rechercher..." style="padding-left:2.2rem;border-radius:var(--radius-sm);border:2px solid var(--gray-200);width:220px;">
         </div>
-        <a href="/besoins/create" class="btn btn-primary-custom">
+        <a href="<?php echo url('/besoins/create'); ?>" class="btn btn-primary-custom">
             <i class="bi bi-plus-lg"></i> Nouveau besoin
         </a>
     </div>
@@ -38,7 +38,7 @@ include(__DIR__ . '/../../layout/header.php');
                 <i class="bi bi-clipboard-x"></i>
                 <h5>Aucun besoin enregistré</h5>
                 <p>Ajoutez un nouveau besoin pour commencer le suivi</p>
-                <a href="/besoins/create" class="btn btn-primary-custom">
+                <a href="<?php echo url('/besoins/create'); ?>" class="btn btn-primary-custom">
                     <i class="bi bi-plus-lg"></i> Ajouter un besoin
                 </a>
             </div>
@@ -97,10 +97,15 @@ include(__DIR__ . '/../../layout/header.php');
                             </td>
                             <td class="col-actions text-center">
                                 <div class="d-flex gap-1 justify-content-center">
-                                    <a href="/besoins/edit/<?php echo $b['id']; ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
+                                    <?php if ($b['quantite_restante'] > 0 && strtolower($b['categorie_nom']) !== 'argent'): ?>
+                                        <a href="<?php echo url('/achats/create?besoin_id=' . $b['id']); ?>" class="btn-sm-action btn-info" data-bs-toggle="tooltip" title="Acheter">
+                                            <i class="bi bi-cart-plus"></i>
+                                        </a>
+                                    <?php endif; ?>
+                                    <a href="<?php echo url('/besoins/edit/' . $b['id']); ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="/besoins/delete/<?php echo $b['id']; ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($b['libelle']); ?>" data-bs-toggle="tooltip" title="Supprimer">
+                                    <a href="<?php echo url('/besoins/delete/' . $b['id']); ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($b['libelle']); ?>" data-bs-toggle="tooltip" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

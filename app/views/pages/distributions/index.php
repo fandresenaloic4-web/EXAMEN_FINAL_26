@@ -20,10 +20,13 @@ include(__DIR__ . '/../../layout/header.php');
             <i class="bi bi-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);"></i>
             <input type="text" id="tableSearch" class="form-control" placeholder="Rechercher..." style="padding-left:2.2rem;border-radius:var(--radius-sm);border:2px solid var(--gray-200);width:220px;">
         </div>
-        <a href="/distributions/dispatch" class="btn btn-warning-custom" data-bs-toggle="tooltip" title="Dispatch automatique">
+        <a href="<?php echo url('/distributions/dispatch?mode=simulate'); ?>" class="btn btn-warning-custom" data-bs-toggle="tooltip" title="Simuler le dispatch">
+            <i class="bi bi-eye"></i> Simuler dispatch
+        </a>
+        <a href="<?php echo url('/distributions/dispatch?mode=validate'); ?>" class="btn btn-success-custom" data-bs-toggle="tooltip" title="Dispatch automatique">
             <i class="bi bi-lightning-charge"></i> Dispatch auto
         </a>
-        <a href="/distributions/create" class="btn btn-primary-custom">
+        <a href="<?php echo url('/distributions/create'); ?>" class="btn btn-primary-custom">
             <i class="bi bi-plus-lg"></i> Nouvelle distribution
         </a>
     </div>
@@ -42,10 +45,10 @@ include(__DIR__ . '/../../layout/header.php');
                 <h5>Aucune distribution effectuée</h5>
                 <p>Créez une distribution ou utilisez le dispatch automatique</p>
                 <div class="d-flex gap-2 justify-content-center">
-                    <a href="/distributions/dispatch" class="btn btn-warning-custom">
-                        <i class="bi bi-lightning-charge"></i> Dispatch auto
+                    <a href="<?php echo url('/distributions/dispatch?mode=simulate'); ?>" class="btn btn-warning-custom">
+                        <i class="bi bi-eye"></i> Simuler dispatch
                     </a>
-                    <a href="/distributions/create" class="btn btn-primary-custom">
+                    <a href="<?php echo url('/distributions/create'); ?>" class="btn btn-primary-custom">
                         <i class="bi bi-plus-lg"></i> Distribution manuelle
                     </a>
                 </div>
@@ -95,7 +98,7 @@ include(__DIR__ . '/../../layout/header.php');
                                 </span>
                             </td>
                             <td class="col-actions text-center">
-                                <a href="/distributions/delete/<?php echo $dist['id']; ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="cette distribution" data-bs-toggle="tooltip" title="Supprimer">
+                                <a href="<?php echo url('/distributions/delete/' . $dist['id']); ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="cette distribution" data-bs-toggle="tooltip" title="Supprimer">
                                     <i class="bi bi-trash"></i>
                                 </a>
                             </td>

@@ -8,6 +8,8 @@ use app\controllers\BesoinController;
 use app\controllers\DonController;
 use app\controllers\DistributionController;
 use app\controllers\VilleController;
+use app\controllers\AchatController;
+use app\controllers\RecapController;
 
 
 /** 
@@ -97,3 +99,22 @@ Flight::route('GET /distributions/delete/@id', [DistributionController::class, '
 // ========================================
 Flight::route('GET /api/besoins/categorie/@id', [DistributionController::class, 'getBesoinsByCategorie']);
 Flight::route('GET /api/dons/categorie/@id', [DistributionController::class, 'getDonsByCategorie']);
+
+// ========================================
+// ACHATS (V2)
+// ========================================
+Flight::route('GET /achats', [AchatController::class, 'index']);
+Flight::route('GET /achats/create', [AchatController::class, 'create']);
+Flight::route('POST /achats/store', [AchatController::class, 'store']);
+Flight::route('GET /achats/delete/@id', [AchatController::class, 'delete']);
+
+// ========================================
+// RÉCAPITULATION (V2)
+// ========================================
+Flight::route('GET /recap', [RecapController::class, 'index']);
+
+// ========================================
+// API V2
+// ========================================
+Flight::route('GET /api/recap', [RecapController::class, 'apiRecap']);
+Flight::route('GET /api/achats/check/@besoinId', [AchatController::class, 'checkDonsDisponibles']);

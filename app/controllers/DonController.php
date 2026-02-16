@@ -27,7 +27,7 @@ class DonController {
         Flight::render('pages/dons/form', [
             'categories' => $this->categorieModel->getAll(),
             'don' => null,
-            'action' => '/dons/store'
+            'action' => url('/dons/store')
         ]);
     }
 
@@ -53,7 +53,7 @@ class DonController {
         Flight::render('pages/dons/form', [
             'categories' => $this->categorieModel->getAll(),
             'don' => $don,
-            'action' => '/dons/update/' . $id
+            'action' => url('/dons/update/' . $id)
         ]);
     }
 

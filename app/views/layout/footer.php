@@ -11,20 +11,26 @@
                 </div>
 
                 <div class="footer-links">
-                    <a href="/about" class="footer-link">
+                    <a href="<?php echo url('/about'); ?>" class="footer-link">
                         <i class="bi bi-info-circle me-1"></i>À propos
                     </a>
-                    <a href="/dashboard" class="footer-link">
+                    <a href="<?php echo url('/dashboard'); ?>" class="footer-link">
                         <i class="bi bi-speedometer2 me-1"></i>Dashboard
                     </a>
-                    <a href="/besoins" class="footer-link">
+                    <a href="<?php echo url('/besoins'); ?>" class="footer-link">
                         <i class="bi bi-clipboard-check me-1"></i>Besoins
                     </a>
-                    <a href="/dons" class="footer-link">
+                    <a href="<?php echo url('/dons'); ?>" class="footer-link">
                         <i class="bi bi-gift me-1"></i>Dons
                     </a>
-                    <a href="/distributions" class="footer-link">
+                    <a href="<?php echo url('/distributions'); ?>" class="footer-link">
                         <i class="bi bi-truck me-1"></i>Distributions
+                    </a>
+                    <a href="<?php echo url('/achats'); ?>" class="footer-link">
+                        <i class="bi bi-cart me-1"></i>Achats
+                    </a>
+                    <a href="<?php echo url('/recap'); ?>" class="footer-link">
+                        <i class="bi bi-clipboard-data me-1"></i>Récapitulation
                     </a>
                 </div>
 
@@ -46,7 +52,9 @@
 
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
+    <!-- Pass BASE_URL to JS -->
+    <script>window.BASE_URL = '<?php echo BASE_URL; ?>';</script>
     <!-- Custom JS -->
-    <script src="/assets/js/app.js"></script>
+    <script src="<?php echo url('/assets/js/app.js'); ?>"></script>
 </body>
 </html>

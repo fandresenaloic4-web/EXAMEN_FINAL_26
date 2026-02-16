@@ -16,7 +16,7 @@ include(__DIR__ . '/../../layout/header.php');
         </div>
     </div>
     <div class="d-flex gap-2 align-items-center flex-wrap">
-        <form method="GET" action="/villes" class="d-flex align-items-center gap-2">
+        <form method="GET" action="<?php echo url('/villes'); ?>" class="d-flex align-items-center gap-2">
             <label class="text-muted" style="font-size:0.85rem;white-space:nowrap;"><i class="bi bi-funnel me-1"></i>Région :</label>
             <select name="region_id" class="form-select form-select-sm" style="width:180px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);" onchange="this.form.submit()">
                 <option value="">Toutes</option>
@@ -31,7 +31,7 @@ include(__DIR__ . '/../../layout/header.php');
             <i class="bi bi-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);"></i>
             <input type="text" id="tableSearch" class="form-control" placeholder="Rechercher..." style="padding-left:2.2rem;border-radius:var(--radius-sm);border:2px solid var(--gray-200);width:220px;">
         </div>
-        <a href="/villes/create" class="btn btn-primary-custom">
+        <a href="<?php echo url('/villes/create'); ?>" class="btn btn-primary-custom">
             <i class="bi bi-plus-lg"></i> Nouvelle ville
         </a>
     </div>
@@ -49,7 +49,7 @@ include(__DIR__ . '/../../layout/header.php');
                 <i class="bi bi-geo-alt"></i>
                 <h5>Aucune ville enregistrée</h5>
                 <p>Ajoutez une nouvelle ville pour commencer</p>
-                <a href="/villes/create" class="btn btn-primary-custom">
+                <a href="<?php echo url('/villes/create'); ?>" class="btn btn-primary-custom">
                     <i class="bi bi-plus-lg"></i> Ajouter une ville
                 </a>
             </div>
@@ -81,10 +81,10 @@ include(__DIR__ . '/../../layout/header.php');
                             </td>
                             <td class="col-actions text-center">
                                 <div class="d-flex gap-1 justify-content-center">
-                                    <a href="/villes/edit/<?php echo $v['id']; ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
+                                    <a href="<?php echo url('/villes/edit/' . $v['id']); ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="/villes/delete/<?php echo $v['id']; ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($v['nom']); ?>" data-bs-toggle="tooltip" title="Supprimer">
+                                    <a href="<?php echo url('/villes/delete/' . $v['id']); ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($v['nom']); ?>" data-bs-toggle="tooltip" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>

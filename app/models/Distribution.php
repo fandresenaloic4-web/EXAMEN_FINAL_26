@@ -174,6 +174,71 @@ class Distribution {
     }
 
     /**
+     * Simulation du dispatch (sans écriture en BD)
+     * Même logique que dispatchDons() mais en mémoire seulement
+     */
+    public function simulateDispatch() {
+        $log = [];
+
+        // Récupérer tous les dons avec quantité disponible
+        $sql = "SELECT d.id, d.nom, d.categorie_id, d.quantite,
+                       COALESCE(SUM(dist.quantite_attribuee), 0) AS distribue,
+                       (d.quantite - COALESCE(SUM(dist.quantite_attribuee), 0)) AS disponible
+                FROM don d
+                LEFT JOIN distribution dist ON dist.don_id = d.id
+                GROUP BY d.id
+                HAVING disponible > 0
+                ORDER BY d.id";
+        $stmt = $this->db->prepare($sql);
+        $stmt->execute();
+        $dons = $stmt->fetchAll(PDO::FETCH_ASSOC);
+
+        // Tracker les quantités simulées en mémoire
+        $besoinRestantSimule = [];
+
+        foreach ($dons as $don) {
+            $disponible = (int) $don['disponible'];
+            if ($disponible <= 0) continue;
+
+            $sql2 = "SELECT b.id, b.libelle, b.quantite_restante, v.nom AS ville_nom
+                     FROM besoin b
+                     JOIN ville v ON b.ville_id = v.id
+                     WHERE b.categorie_id = ? AND b.quantite_restante > 0
+                     ORDER BY b.id";
+            $stmt2 = $this->db->prepare($sql2);
+            $stmt2->bindParam(1, $don['categorie_id'], PDO::PARAM_INT);
+            $stmt2->execute();
+            $besoins = $stmt2->fetchAll(PDO::FETCH_ASSOC);
+
+            foreach ($besoins as $besoin) {
+                if ($disponible <= 0) break;
+
+                // Utiliser la quantité restante simulée si déjà traquée
+                $restant = isset($besoinRestantSimule[$besoin['id']]) 
+                    ? $besoinRestantSimule[$besoin['id']] 
+                    : (int) $besoin['quantite_restante'];
+                
+                if ($restant <= 0) continue;
+
+                $a_attribuer = min($disponible, $restant);
+
+                // Mettre à jour uniquement en mémoire
+                $besoinRestantSimule[$besoin['id']] = $restant - $a_attribuer;
+                $disponible -= $a_attribuer;
+
+                $log[] = [
+                    'don' => $don['nom'],
+                    'besoin' => $besoin['libelle'],
+                    'ville' => $besoin['ville_nom'],
+                    'quantite' => $a_attribuer
+                ];
+            }
+        }
+
+        return $log;
+    }
+
+    /**
      * Récupérer les distributions par date
      */
     public function getByDate($date) {

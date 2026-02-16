@@ -20,7 +20,7 @@ include(__DIR__ . '/../../layout/header.php');
             <i class="bi bi-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);"></i>
             <input type="text" id="tableSearch" class="form-control" placeholder="Rechercher..." style="padding-left:2.2rem;border-radius:var(--radius-sm);border:2px solid var(--gray-200);width:220px;">
         </div>
-        <a href="/dons/create" class="btn btn-success-custom">
+        <a href="<?php echo url('/dons/create'); ?>" class="btn btn-success-custom">
             <i class="bi bi-plus-lg"></i> Nouveau don
         </a>
     </div>
@@ -38,7 +38,7 @@ include(__DIR__ . '/../../layout/header.php');
                 <i class="bi bi-gift"></i>
                 <h5>Aucun don enregistré</h5>
                 <p>Ajoutez un nouveau don pour commencer la distribution</p>
-                <a href="/dons/create" class="btn btn-success-custom">
+                <a href="<?php echo url('/dons/create'); ?>" class="btn btn-success-custom">
                     <i class="bi bi-plus-lg"></i> Ajouter un don
                 </a>
             </div>
@@ -92,10 +92,10 @@ include(__DIR__ . '/../../layout/header.php');
                             </td>
                             <td class="col-actions text-center">
                                 <div class="d-flex gap-1 justify-content-center">
-                                    <a href="/dons/edit/<?php echo $d['id']; ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
+                                    <a href="<?php echo url('/dons/edit/' . $d['id']); ?>" class="btn-sm-action btn-edit" data-bs-toggle="tooltip" title="Modifier">
                                         <i class="bi bi-pencil"></i>
                                     </a>
-                                    <a href="/dons/delete/<?php echo $d['id']; ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($d['nom']); ?>" data-bs-toggle="tooltip" title="Supprimer">
+                                    <a href="<?php echo url('/dons/delete/' . $d['id']); ?>" class="btn-sm-action btn-delete btn-delete-confirm" data-name="<?php echo htmlspecialchars($d['nom']); ?>" data-bs-toggle="tooltip" title="Supprimer">
                                         <i class="bi bi-trash"></i>
                                     </a>
                                 </div>
