@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Takalo - Plateforme d'Échange</title>
+    <title>BNGRC - Suivi des Dons et Catastrophes</title>
     <!-- Bootstrap 5 -->
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/css/bootstrap.min.css" rel="stylesheet">
     <!-- Bootstrap Icons -->
@@ -17,36 +17,33 @@
     <!-- Hero Section -->
     <section class="hero-section">
         <div class="hero-content">
-            <h1 class="hero-logo fade-in">TAKALO</h1>
-            <p class="hero-subtitle text-white-50 fade-in-delay-1">Plateforme moderne d'échange et de commerce</p>
+            <h1 class="hero-logo fade-in">BNGRC</h1>
+            <p class="hero-subtitle text-white-50 fade-in-delay-1">Bureau National de Gestion des Risques et des Catastrophes</p>
             
             <div class="role-cards">
                 <!-- User Card -->
-                <a href="/index?l=user" class="role-card user">
+                <a href="/index?l=user" class="role-card user fade-in-delay-2">
                     <div class="role-icon">
                         <i class="bi bi-person-circle"></i>
                     </div>
                     <h3 class="role-title">Utilisateur</h3>
-                    <p class="role-description">Accédez à la plateforme en tant qu'utilisateur standard</p>
+                    <p class="role-description">Consultez les besoins et suivez les distributions</p>
                 </a>
                 
                 <!-- Admin Card -->
-                <a href="/index?l=admin" class="role-card admin">
+                <a href="/index?l=admin" class="role-card admin fade-in-delay-3">
                     <div class="role-icon">
                         <i class="bi bi-shield-check"></i>
                     </div>
                     <h3 class="role-title">Administrateur</h3>
-                    <p class="role-description">Gérez la plateforme avec des privilèges admin</p>
+                    <p class="role-description">Gérez les dons, besoins et distributions</p>
                 </a>
             </div>
         </div>
     </section>
 
-    <?php include(__DIR__ . "/../footer/footer.php"); ?>
-
     <!-- Bootstrap JS -->
     <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.3.0/dist/js/bootstrap.bundle.min.js"></script>
-    <!-- Custom JS -->
     <script src="/assets/js/app.js"></script>
 </body>
 </html>

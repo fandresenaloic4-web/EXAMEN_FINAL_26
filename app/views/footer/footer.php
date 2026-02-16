@@ -3,22 +3,22 @@
     <div class="container">
         <div class="footer-content">
             <div class="footer-brand-section">
-                <h3 class="footer-brand">TAKALO</h3>
-                <p class="text-muted">Plateforme d'échange moderne</p>
+                <h3 class="footer-brand">BNGRC</h3>
+                <p class="text-muted">Bureau National de Gestion des Risques et des Catastrophes</p>
             </div>
             
             <div class="footer-links">
-                <a href="#" class="footer-link">
+                <a href="/home" class="footer-link">
                     <i class="bi bi-house-door me-1"></i>Accueil
                 </a>
-                <a href="#" class="footer-link">
-                    <i class="bi bi-info-circle me-1"></i>À propos
+                <a href="/dashboard" class="footer-link">
+                    <i class="bi bi-speedometer2 me-1"></i>Dashboard
                 </a>
-                <a href="#" class="footer-link">
-                    <i class="bi bi-envelope me-1"></i>Contact
+                <a href="/besoins" class="footer-link">
+                    <i class="bi bi-clipboard-check me-1"></i>Besoins
                 </a>
-                <a href="#" class="footer-link">
-                    <i class="bi bi-shield-check me-1"></i>Sécurité
+                <a href="/dons" class="footer-link">
+                    <i class="bi bi-gift me-1"></i>Dons
                 </a>
             </div>
 
@@ -32,7 +32,7 @@
         <div class="footer-bottom">
             <p class="mb-0">
                 <i class="bi bi-c-circle me-1"></i>
-                2026 Takalo. Tous droits réservés. | Fait avec <i class="bi bi-heart-fill text-danger"></i> par l'équipe Takalo
+                2026 BNGRC. Tous droits réservés. | Fait avec <i class="bi bi-heart-fill text-danger"></i> par l'équipe BNGRC
             </p>
         </div>
     </div>
