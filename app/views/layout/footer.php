@@ -9,8 +9,11 @@
                     <h3 class="footer-brand">BNGRC</h3>
                     <p class="text-muted" style="font-size:0.85rem;">Bureau National de Gestion des Risques et des Catastrophes</p>
                 </div>
-                
+
                 <div class="footer-links">
+                    <a href="/about" class="footer-link">
+                        <i class="bi bi-info-circle me-1"></i>À propos
+                    </a>
                     <a href="/dashboard" class="footer-link">
                         <i class="bi bi-speedometer2 me-1"></i>Dashboard
                     </a>

@@ -16,10 +16,19 @@ class VilleController {
     }
 
     public function index() {
-        $villes = $this->villeModel->getAll();
+        $regionId = Flight::request()->query->region_id ?? null;
+        $regionId = $regionId ? (int) $regionId : null;
+
+        if ($regionId) {
+            $villes = $this->villeModel->getByRegion($regionId);
+        } else {
+            $villes = $this->villeModel->getAll();
+        }
 
         Flight::render('pages/villes/index', [
-            'villes' => $villes
+            'villes' => $villes,
+            'regions' => $this->regionModel->getAll(),
+            'selectedRegion' => $regionId
         ]);
     }
 

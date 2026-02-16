@@ -47,6 +47,13 @@ Flight::route('/', function () {
 Flight::route('GET /dashboard', [DashboardController::class, 'index']);
 
 // ========================================
+// À PROPOS
+// ========================================
+Flight::route('GET /about', function () {
+    Flight::render('pages/about');
+});
+
+// ========================================
 // VILLES
 // ========================================
 Flight::route('GET /villes', [VilleController::class, 'index']);

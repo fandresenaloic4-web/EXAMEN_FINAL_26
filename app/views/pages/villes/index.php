@@ -15,7 +15,18 @@ include(__DIR__ . '/../../layout/header.php');
             <p class="breadcrumb-text">Liste des villes sinistrées</p>
         </div>
     </div>
-    <div class="d-flex gap-2 align-items-center">
+    <div class="d-flex gap-2 align-items-center flex-wrap">
+        <form method="GET" action="/villes" class="d-flex align-items-center gap-2">
+            <label class="text-muted" style="font-size:0.85rem;white-space:nowrap;"><i class="bi bi-funnel me-1"></i>Région :</label>
+            <select name="region_id" class="form-select form-select-sm" style="width:180px;border:2px solid var(--gray-200);border-radius:var(--radius-sm);" onchange="this.form.submit()">
+                <option value="">Toutes</option>
+                <?php foreach ($regions as $r): ?>
+                    <option value="<?php echo $r['id']; ?>" <?php echo (isset($selectedRegion) && $selectedRegion == $r['id']) ? 'selected' : ''; ?>>
+                        <?php echo htmlspecialchars($r['nom']); ?>
+                    </option>
+                <?php endforeach; ?>
+            </select>
+        </form>
         <div class="position-relative">
             <i class="bi bi-search position-absolute" style="left:12px;top:50%;transform:translateY(-50%);color:var(--gray-400);"></i>
             <input type="text" id="tableSearch" class="form-control" placeholder="Rechercher..." style="padding-left:2.2rem;border-radius:var(--radius-sm);border:2px solid var(--gray-200);width:220px;">

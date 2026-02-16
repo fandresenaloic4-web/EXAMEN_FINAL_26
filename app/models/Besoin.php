@@ -22,7 +22,7 @@ class Besoin {
                 FROM besoin b
                 JOIN ville v ON b.ville_id = v.id
                 JOIN categorie c ON b.categorie_id = c.id
-                ORDER BY v.nom, c.nom";
+                ORDER BY b.quantite_restante DESC, v.nom, c.nom";
         $stmt = $this->db->prepare($sql);
         $stmt->execute();
         return $stmt->fetchAll(PDO::FETCH_ASSOC);
@@ -147,7 +147,7 @@ class Besoin {
      * Données du tableau de bord : besoins par ville avec dons attribués
      */
     public function getDashboardData() {
-        $sql = "SELECT v.id AS ville_id, v.nom AS ville_nom, r.nom AS region_nom,
+        $sql = "SELECT v.id AS ville_id, v.nom AS ville_nom, r.id AS region_id, r.nom AS region_nom,
                        b.id AS besoin_id, b.libelle, b.prix_unitaire, b.quantite_demandee, b.quantite_restante,
                        c.nom AS categorie_nom,
                        (b.quantite_demandee - b.quantite_restante) AS quantite_attribuee_total,

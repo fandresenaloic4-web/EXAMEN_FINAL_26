@@ -288,11 +288,6 @@ function initDistributionForm() {
     }
 }
 
-/* ---------- Print Dispatch Result ---------- */
-function printDispatchResult() {
-    window.print();
-}
-
 /* ---------- Export Table to CSV ---------- */
 function exportTableCSV(tableId, filename) {
     const table = document.getElementById(tableId);

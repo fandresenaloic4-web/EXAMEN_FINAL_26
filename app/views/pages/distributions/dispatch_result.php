@@ -25,9 +25,6 @@ foreach ($log as $entry) {
         </div>
     </div>
     <div class="d-flex gap-2">
-        <button onclick="printDispatchResult()" class="btn btn-outline-custom">
-            <i class="bi bi-printer"></i> Imprimer
-        </button>
         <a href="/distributions" class="btn btn-primary-custom">
             <i class="bi bi-arrow-left"></i> Retour aux distributions
         </a>
