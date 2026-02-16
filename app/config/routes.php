@@ -3,7 +3,11 @@
 use app\middlewares\SecurityHeadersMiddleware;
 use flight\Engine;
 use flight\net\Router;
-use app\controllers\UtilisateurController;
+use app\controllers\DashboardController;
+use app\controllers\BesoinController;
+use app\controllers\DonController;
+use app\controllers\DistributionController;
+use app\controllers\VilleController;
 
 
 /** 
@@ -32,36 +36,57 @@ Flight::route('GET /test-db', function() {
     echo 'DB OK';
 });
 
-// Page d'accueil (login)
+// Page d'accueil -> Dashboard
 Flight::route('/', function () {
-    Flight::render('pages/index');
+    Flight::redirect('/dashboard');
 });
 
-Flight::route('/index', function () {
-    $user = Flight::request()->query->l ?? null;
-    $_SESSION['l']= $user;
-    Flight::render('pages/login');
-});
+// ========================================
+// DASHBOARD
+// ========================================
+Flight::route('GET /dashboard', [DashboardController::class, 'index']);
 
+// ========================================
+// VILLES
+// ========================================
+Flight::route('GET /villes', [VilleController::class, 'index']);
+Flight::route('GET /villes/create', [VilleController::class, 'create']);
+Flight::route('POST /villes/store', [VilleController::class, 'store']);
+Flight::route('GET /villes/edit/@id', [VilleController::class, 'edit']);
+Flight::route('POST /villes/update/@id', [VilleController::class, 'update']);
+Flight::route('GET /villes/delete/@id', [VilleController::class, 'delete']);
 
-// Login GET et POST
-Flight::route('GET /login', [UtilisateurController::class, 'login']);
-Flight::route('POST /login', [UtilisateurController::class, 'login']);
+// ========================================
+// BESOINS
+// ========================================
+Flight::route('GET /besoins', [BesoinController::class, 'index']);
+Flight::route('GET /besoins/create', [BesoinController::class, 'create']);
+Flight::route('POST /besoins/store', [BesoinController::class, 'store']);
+Flight::route('GET /besoins/edit/@id', [BesoinController::class, 'edit']);
+Flight::route('POST /besoins/update/@id', [BesoinController::class, 'update']);
+Flight::route('GET /besoins/delete/@id', [BesoinController::class, 'delete']);
 
-// Logout
-Flight::route('GET /logout', function () {
-    session_start();
-    session_destroy();
-    Flight::redirect('/l');
-});
+// ========================================
+// DONS
+// ========================================
+Flight::route('GET /dons', [DonController::class, 'index']);
+Flight::route('GET /dons/create', [DonController::class, 'create']);
+Flight::route('POST /dons/store', [DonController::class, 'store']);
+Flight::route('GET /dons/edit/@id', [DonController::class, 'edit']);
+Flight::route('POST /dons/update/@id', [DonController::class, 'update']);
+Flight::route('GET /dons/delete/@id', [DonController::class, 'delete']);
 
-Flight::route('GET /home', function () {
-    Flight::render('pages/accueil');
-});
+// ========================================
+// DISTRIBUTIONS
+// ========================================
+Flight::route('GET /distributions', [DistributionController::class, 'index']);
+Flight::route('GET /distributions/create', [DistributionController::class, 'create']);
+Flight::route('POST /distributions/store', [DistributionController::class, 'store']);
+Flight::route('GET /distributions/dispatch', [DistributionController::class, 'dispatch']);
+Flight::route('GET /distributions/delete/@id', [DistributionController::class, 'delete']);
 
-Flight::route('GET /accueil', function () {
-    Flight::redirect('/home');
-});
-    
-
-	
+// ========================================
+// API (pour le formulaire dynamique)
+// ========================================
+Flight::route('GET /api/besoins/categorie/@id', [DistributionController::class, 'getBesoinsByCategorie']);
+Flight::route('GET /api/dons/categorie/@id', [DistributionController::class, 'getDonsByCategorie']);
