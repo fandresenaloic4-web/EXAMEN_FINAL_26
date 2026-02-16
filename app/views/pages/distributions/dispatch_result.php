@@ -7,6 +7,7 @@ $totalDistribue = 0;
 foreach ($log as $entry) {
     $totalDistribue += $entry['quantite'];
 }
+$isSimulation = isset($mode) && $mode === 'simulated';
 ?>
 
 <!-- Page Header -->
@@ -16,20 +17,42 @@ foreach ($log as $entry) {
             <i class="bi bi-lightning-charge"></i>
         </div>
         <div>
-            <h1>Résultat du Dispatch Automatique</h1>
+            <h1><?php echo $isSimulation ? 'Simulation du Dispatch' : 'Résultat du Dispatch Automatique'; ?></h1>
             <p class="breadcrumb-text">
-                <a href="/distributions" class="text-decoration-none text-muted">Distributions</a>
+                <a href="<?php echo url('/distributions'); ?>" class="text-decoration-none text-muted">Distributions</a>
                 <i class="bi bi-chevron-right mx-1" style="font-size:0.7rem;"></i>
-                Dispatch
+                <?php echo $isSimulation ? 'Simulation' : 'Dispatch'; ?>
             </p>
         </div>
     </div>
     <div class="d-flex gap-2">
-        <a href="/distributions" class="btn btn-primary-custom">
+        <?php if ($isSimulation && !empty($log)): ?>
+            <a href="<?php echo url('/distributions/dispatch?mode=validate'); ?>" class="btn btn-success-custom">
+                <i class="bi bi-check-circle"></i> Valider le dispatch
+            </a>
+        <?php endif; ?>
+        <a href="<?php echo url('/distributions'); ?>" class="btn btn-primary-custom">
             <i class="bi bi-arrow-left"></i> Retour aux distributions
         </a>
     </div>
 </div>
+
+<?php if ($isSimulation): ?>
+    <div class="alert alert-info d-flex align-items-center gap-2 fade-in-up" role="alert">
+        <i class="bi bi-info-circle-fill fs-5"></i>
+        <div>
+            <strong>Mode Simulation :</strong> Ces distributions n'ont <u>pas encore été enregistrées</u> en base de données. 
+            Cliquez sur "Valider le dispatch" pour les appliquer.
+        </div>
+    </div>
+<?php elseif (isset($mode) && $mode === 'validated'): ?>
+    <div class="alert alert-success d-flex align-items-center gap-2 fade-in-up" role="alert">
+        <i class="bi bi-check-circle-fill fs-5"></i>
+        <div>
+            <strong>Dispatch validé !</strong> Toutes les distributions ci-dessous ont été enregistrées avec succès.
+        </div>
+    </div>
+<?php endif; ?>
 
 <?php if (empty($log)): ?>
     <!-- No distributions made -->
@@ -39,7 +62,7 @@ foreach ($log as $entry) {
                 <i class="bi bi-check-circle text-success" style="opacity:0.5;"></i>
                 <h5>Aucune distribution effectuée</h5>
                 <p>Tous les dons sont déjà distribués ou il n'y a pas de besoins correspondants.</p>
-                <a href="/dashboard" class="btn btn-primary-custom">
+                <a href="<?php echo url('/dashboard'); ?>" class="btn btn-primary-custom">
                     <i class="bi bi-speedometer2"></i> Voir le dashboard
                 </a>
             </div>

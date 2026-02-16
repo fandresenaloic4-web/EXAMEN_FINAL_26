@@ -31,7 +31,7 @@ class BesoinController {
             'villes' => $this->villeModel->getAll(),
             'categories' => $this->categorieModel->getAll(),
             'besoin' => null,
-            'action' => '/besoins/store'
+            'action' => url('/besoins/store')
         ]);
     }
 
@@ -60,7 +60,7 @@ class BesoinController {
             'villes' => $this->villeModel->getAll(),
             'categories' => $this->categorieModel->getAll(),
             'besoin' => $besoin,
-            'action' => '/besoins/update/' . $id
+            'action' => url('/besoins/update/' . $id)
         ]);
     }
 

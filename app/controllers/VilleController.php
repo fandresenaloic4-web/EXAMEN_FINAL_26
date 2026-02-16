@@ -36,7 +36,7 @@ class VilleController {
         Flight::render('pages/villes/form', [
             'regions' => $this->regionModel->getAll(),
             'ville' => null,
-            'action' => '/villes/store'
+            'action' => url('/villes/store')
         ]);
     }
 
@@ -61,7 +61,7 @@ class VilleController {
         Flight::render('pages/villes/form', [
             'regions' => $this->regionModel->getAll(),
             'ville' => $ville,
-            'action' => '/villes/update/' . $id
+            'action' => url('/villes/update/' . $id)
         ]);
     }
 

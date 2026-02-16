@@ -14,7 +14,7 @@ include(__DIR__ . '/../../layout/header.php');
         <div>
             <h1><?php echo $pageTitle; ?></h1>
             <p class="breadcrumb-text">
-                <a href="/besoins" class="text-decoration-none text-muted">Besoins</a>
+                <a href="<?php echo url('/besoins'); ?>" class="text-decoration-none text-muted">Besoins</a>
                 <i class="bi bi-chevron-right mx-1" style="font-size:0.7rem;"></i>
                 <?php echo $isEdit ? 'Modifier' : 'Créer'; ?>
             </p>
@@ -102,7 +102,7 @@ include(__DIR__ . '/../../layout/header.php');
                     </div>
 
                     <div class="d-flex justify-content-between mt-4 pt-3 border-top">
-                        <a href="/besoins" class="btn btn-outline-custom">
+                        <a href="<?php echo url('/besoins'); ?>" class="btn btn-outline-custom">
                             <i class="bi bi-arrow-left"></i> Retour
                         </a>
                         <button type="submit" class="btn <?php echo $isEdit ? 'btn-warning-custom' : 'btn-success-custom'; ?>">

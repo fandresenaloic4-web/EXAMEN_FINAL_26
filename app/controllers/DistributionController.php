@@ -30,7 +30,7 @@ class DistributionController {
         Flight::render('pages/distributions/form', [
             'dons' => $this->donModel->getAll(),
             'besoins' => $this->besoinModel->getAll(),
-            'action' => '/distributions/store'
+            'action' => url('/distributions/store')
         ]);
     }
 
@@ -72,11 +72,21 @@ class DistributionController {
     }
 
     public function dispatch() {
-        $log = $this->distModel->dispatchDons();
+        $mode = Flight::request()->query->mode ?: 'validate';
 
-        Flight::render('pages/distributions/dispatch_result', [
-            'log' => $log
-        ]);
+        if ($mode === 'simulate') {
+            $log = $this->distModel->simulateDispatch();
+            Flight::render('pages/distributions/dispatch_result', [
+                'log' => $log,
+                'mode' => 'simulated'
+            ]);
+        } else {
+            $log = $this->distModel->dispatchDons();
+            Flight::render('pages/distributions/dispatch_result', [
+                'log' => $log,
+                'mode' => 'validated'
+            ]);
+        }
     }
 
     public function delete($id) {

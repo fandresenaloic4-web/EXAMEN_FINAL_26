@@ -14,13 +14,13 @@ $currentPage = $currentPage ?? '';
     <!-- Google Fonts -->
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
     <!-- Custom CSS -->
-    <link rel="stylesheet" href="/assets/css/app.css">
+    <link rel="stylesheet" href="<?php echo url('/assets/css/app.css'); ?>">
 </head>
 <body>
     <!-- Navbar -->
     <nav class="navbar navbar-expand-lg navbar-bngrc">
         <div class="container">
-            <a class="navbar-brand" href="/dashboard">
+            <a class="navbar-brand" href="<?php echo url('/dashboard'); ?>">
                 <span class="brand-icon">
                     <i class="bi bi-heart-pulse"></i>
                 </span>
@@ -32,28 +32,38 @@ $currentPage = $currentPage ?? '';
             <div class="collapse navbar-collapse" id="mainNav">
                 <ul class="navbar-nav ms-auto">
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'dashboard' ? 'active' : ''; ?>" href="/dashboard">
+                        <a class="nav-link <?php echo $currentPage === 'dashboard' ? 'active' : ''; ?>" href="<?php echo url('/dashboard'); ?>">
                             <i class="bi bi-speedometer2"></i> Dashboard
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'villes' ? 'active' : ''; ?>" href="/villes">
+                        <a class="nav-link <?php echo $currentPage === 'villes' ? 'active' : ''; ?>" href="<?php echo url('/villes'); ?>">
                             <i class="bi bi-geo-alt"></i> Villes
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'besoins' ? 'active' : ''; ?>" href="/besoins">
+                        <a class="nav-link <?php echo $currentPage === 'besoins' ? 'active' : ''; ?>" href="<?php echo url('/besoins'); ?>">
                             <i class="bi bi-clipboard-check"></i> Besoins
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'dons' ? 'active' : ''; ?>" href="/dons">
+                        <a class="nav-link <?php echo $currentPage === 'dons' ? 'active' : ''; ?>" href="<?php echo url('/dons'); ?>">
                             <i class="bi bi-gift"></i> Dons
                         </a>
                     </li>
                     <li class="nav-item">
-                        <a class="nav-link <?php echo $currentPage === 'distributions' ? 'active' : ''; ?>" href="/distributions">
+                        <a class="nav-link <?php echo $currentPage === 'distributions' ? 'active' : ''; ?>" href="<?php echo url('/distributions'); ?>">
                             <i class="bi bi-truck"></i> Distributions
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $currentPage === 'achats' ? 'active' : ''; ?>" href="<?php echo url('/achats'); ?>">
+                            <i class="bi bi-cart"></i> Achats
+                        </a>
+                    </li>
+                    <li class="nav-item">
+                        <a class="nav-link <?php echo $currentPage === 'recap' ? 'active' : ''; ?>" href="<?php echo url('/recap'); ?>">
+                            <i class="bi bi-clipboard-data"></i> Récap
                         </a>
                     </li>
                 </ul>

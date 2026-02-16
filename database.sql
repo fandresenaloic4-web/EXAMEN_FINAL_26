@@ -57,6 +57,21 @@ CREATE TABLE distribution (
     FOREIGN KEY (besoin_id) REFERENCES besoin(id)
 );
 
+-- ACHAT (V2 - achats via dons en argent)
+CREATE TABLE achat (
+    id INT AUTO_INCREMENT PRIMARY KEY,
+    besoin_id INT NOT NULL,
+    quantite INT NOT NULL,
+    prix_unitaire DECIMAL(10,2) NOT NULL,
+    frais_pourcent DECIMAL(5,2) NOT NULL DEFAULT 10,
+    montant_ht DECIMAL(12,2) NOT NULL,
+    montant_frais DECIMAL(12,2) NOT NULL,
+    montant_total DECIMAL(12,2) NOT NULL,
+    date_achat DATE NOT NULL,
+
+    FOREIGN KEY (besoin_id) REFERENCES besoin(id)
+);
+
 INSERT INTO categorie (nom) VALUES
 ('Nature'),
 ('Materiel'),

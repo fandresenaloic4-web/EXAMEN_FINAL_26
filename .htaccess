@@ -1,0 +1,10 @@
+RewriteEngine On
+
+# Si la requête correspond à un fichier dans public/assets, servir directement
+RewriteCond %{REQUEST_URI} ^/ETU004291/EXAMEN_s3/assets/(.*)$
+RewriteRule ^assets/(.*)$ public/assets/$1 [L]
+
+# Sinon tout passe par index.php
+RewriteCond %{REQUEST_FILENAME} !-f
+RewriteCond %{REQUEST_FILENAME} !-d
+RewriteRule ^(.*)$ index.php [QSA,L]
