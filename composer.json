@@ -1,0 +1,16 @@
+{
+    "name": "app/trading",
+    "description": "Application de messagerie avec Flight PHP",
+    "type": "project",
+    "require": {
+        "php": ">=7.4",
+        "flightphp/core": "^3.0",
+        "tracy/tracy": "*",
+        "flightphp/tracy-extensions": "*"
+    },
+    "autoload": {
+        "psr-4": {
+            "app\\": "app/"
+        }
+    }
+}
