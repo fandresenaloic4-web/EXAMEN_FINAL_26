@@ -56,7 +56,7 @@ class Achat {
     /**
      * Insérer un nouvel achat
      */
-    public function inserer($besoinId, $quantite, $prixUnitaire, $fraisPourcent) {
+    public function inserez($besoinId, $quantite, $prixUnitaire, $fraisPourcent) {
         $montantHt = $prixUnitaire * $quantite;
         $montantFrais = $montantHt * ($fraisPourcent / 100);
         $montantTotal = $montantHt + $montantFrais;
