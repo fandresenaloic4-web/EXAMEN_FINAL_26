@@ -116,7 +116,7 @@ class Distribution {
      * Dispatch automatique des dons par ordre de saisie
      * Distribue les dons disponibles vers les besoins de même catégorie
      */
-    public function dispatchDons() {
+    public function dispatchDons($strategy = 'fifo') {
         $log = [];
 
         // Récupérer tous les dons avec quantité disponible, ordonnés par id (ordre de saisie)
@@ -135,38 +135,102 @@ class Distribution {
         foreach ($dons as $don) {
             $disponible = (int) $don['disponible'];
             if ($disponible <= 0) continue;
+            // Récupérer besoins de même catégorie (ordre dépend de la stratégie)
+            $orderBy = 'b.id';
+            if ($strategy === 'smallest') {
+                $orderBy = 'b.quantite_restante ASC';
+            }
 
-            // Trouver les besoins de même catégorie avec quantité restante
             $sql2 = "SELECT b.id, b.libelle, b.quantite_restante, v.nom AS ville_nom
                      FROM besoin b
                      JOIN ville v ON b.ville_id = v.id
                      WHERE b.categorie_id = ? AND b.quantite_restante > 0
-                     ORDER BY b.id";
+                     ORDER BY " . $orderBy;
             $stmt2 = $this->db->prepare($sql2);
             $stmt2->bindParam(1, $don['categorie_id'], PDO::PARAM_INT);
             $stmt2->execute();
             $besoins = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($besoins as $besoin) {
-                if ($disponible <= 0) break;
+            if ($strategy === 'proportion') {
+                // Distribuer proportionnellement selon quantite_restante
+                $totalRest = 0;
+                foreach ($besoins as $b) $totalRest += (int) $b['quantite_restante'];
+                if ($totalRest <= 0) continue;
 
-                $a_attribuer = min($disponible, (int) $besoin['quantite_restante']);
+                // Calculer allocations initiales et fractions
+                $allocs = [];
+                $fractions = [];
+                $sumAllocated = 0;
+                foreach ($besoins as $b) {
+                    $need = (int) $b['quantite_restante'];
+                    $raw = ($disponible * $need) / $totalRest;
+                    $floor = (int) floor($raw);
+                    $alloc = min($floor, $need);
+                    $allocs[$b['id']] = $alloc;
+                    $fractions[$b['id']] = $raw - $floor;
+                    $sumAllocated += $alloc;
+                }
 
-                // Créer la distribution
-                $this->inserer($don['id'], $besoin['id'], $a_attribuer, date('Y-m-d'));
+                // Distribuer le reste selon la plus grande fraction, sans dépasser le besoin
+                $remainder = $disponible - $sumAllocated;
+                if ($remainder > 0) {
+                    arsort($fractions);
+                    foreach ($fractions as $bid => $frac) {
+                        if ($remainder <= 0) break;
+                        // trouver capacité
+                        $cap = null;
+                        foreach ($besoins as $b) if ($b['id'] == $bid) { $cap = (int)$b['quantite_restante']; break; }
+                        $current = $allocs[$bid];
+                        if ($current < $cap) {
+                            $allocs[$bid] = $current + 1;
+                            $remainder -= 1;
+                        }
+                    }
+                }
 
-                // Mettre à jour le besoin
-                $besoinModel = new Besoin();
-                $besoinModel->updateQuantiteRestante($besoin['id'], $a_attribuer);
+                // Appliquer allocations
+                foreach ($besoins as $b) {
+                    $bid = $b['id'];
+                    $a_attribuer = isset($allocs[$bid]) ? (int)$allocs[$bid] : 0;
+                    if ($a_attribuer <= 0) continue;
 
-                $disponible -= $a_attribuer;
+                    $this->inserer($don['id'], $bid, $a_attribuer, date('Y-m-d'));
+                    $besoinModel = new Besoin();
+                    $besoinModel->updateQuantiteRestante($bid, $a_attribuer);
 
-                $log[] = [
-                    'don' => $don['nom'],
-                    'besoin' => $besoin['libelle'],
-                    'ville' => $besoin['ville_nom'],
-                    'quantite' => $a_attribuer
-                ];
+                    $disponible -= $a_attribuer;
+
+                    $log[] = [
+                        'don' => $don['nom'],
+                        'besoin' => $b['libelle'],
+                        'ville' => $b['ville_nom'],
+                        'quantite' => $a_attribuer
+                    ];
+
+                    if ($disponible <= 0) break;
+                }
+
+            } else {
+                // FIFO ou smallest (ordre déjà pris en compte)
+                foreach ($besoins as $besoin) {
+                    if ($disponible <= 0) break;
+
+                    $a_attribuer = min($disponible, (int) $besoin['quantite_restante']);
+                    if ($a_attribuer <= 0) continue;
+
+                    $this->inserer($don['id'], $besoin['id'], $a_attribuer, date('Y-m-d'));
+                    $besoinModel = new Besoin();
+                    $besoinModel->updateQuantiteRestante($besoin['id'], $a_attribuer);
+
+                    $disponible -= $a_attribuer;
+
+                    $log[] = [
+                        'don' => $don['nom'],
+                        'besoin' => $besoin['libelle'],
+                        'ville' => $besoin['ville_nom'],
+                        'quantite' => $a_attribuer
+                    ];
+                }
             }
         }
 
@@ -177,13 +241,13 @@ class Distribution {
      * Simulation du dispatch (sans écriture en BD)
      * Même logique que dispatchDons() mais en mémoire seulement
      */
-    public function simulateDispatch() {
+    public function simulateDispatch($strategy = 'fifo') {
         $log = [];
 
         // Récupérer tous les dons avec quantité disponible
         $sql = "SELECT d.id, d.nom, d.categorie_id, d.quantite,
                        COALESCE(SUM(dist.quantite_attribuee), 0) AS distribue,
-                       (d.quantite - COALESCE(SUM(dist.quantite_attribuee), 0)) AS disponible
+                       (d.quantite - COALESCE(SUM(dist.quantite_attribue), 0)) AS disponible
                 FROM don d
                 LEFT JOIN distribution dist ON dist.don_id = d.id
                 GROUP BY d.id
@@ -200,38 +264,81 @@ class Distribution {
             $disponible = (int) $don['disponible'];
             if ($disponible <= 0) continue;
 
+            // Récupérer besoins (ordre selon stratégie)
+            $orderBy = ($strategy === 'smallest') ? 'b.quantite_restante ASC' : 'b.id';
             $sql2 = "SELECT b.id, b.libelle, b.quantite_restante, v.nom AS ville_nom
                      FROM besoin b
                      JOIN ville v ON b.ville_id = v.id
                      WHERE b.categorie_id = ? AND b.quantite_restante > 0
-                     ORDER BY b.id";
+                     ORDER BY " . $orderBy;
             $stmt2 = $this->db->prepare($sql2);
             $stmt2->bindParam(1, $don['categorie_id'], PDO::PARAM_INT);
             $stmt2->execute();
             $besoins = $stmt2->fetchAll(PDO::FETCH_ASSOC);
 
-            foreach ($besoins as $besoin) {
-                if ($disponible <= 0) break;
+            if ($strategy === 'proportion') {
+                $totalRest = 0;
+                foreach ($besoins as $b) {
+                    $id = $b['id'];
+                    $rest = isset($besoinRestantSimule[$id]) ? $besoinRestantSimule[$id] : (int)$b['quantite_restante'];
+                    $totalRest += $rest;
+                }
+                if ($totalRest <= 0) continue;
 
-                // Utiliser la quantité restante simulée si déjà traquée
-                $restant = isset($besoinRestantSimule[$besoin['id']]) 
-                    ? $besoinRestantSimule[$besoin['id']] 
-                    : (int) $besoin['quantite_restante'];
-                
-                if ($restant <= 0) continue;
+                $allocs = [];
+                $fractions = [];
+                $sumAlloc = 0;
+                foreach ($besoins as $b) {
+                    $id = $b['id'];
+                    $rest = isset($besoinRestantSimule[$id]) ? $besoinRestantSimule[$id] : (int)$b['quantite_restante'];
+                    if ($rest <= 0) { $allocs[$id] = 0; $fractions[$id] = 0; continue; }
+                    $raw = ($disponible * $rest) / $totalRest;
+                    $floor = (int) floor($raw);
+                    $alloc = min($floor, $rest);
+                    $allocs[$id] = $alloc;
+                    $fractions[$id] = $raw - $floor;
+                    $sumAlloc += $alloc;
+                }
 
-                $a_attribuer = min($disponible, $restant);
+                $remainder = $disponible - $sumAlloc;
+                if ($remainder > 0) {
+                    arsort($fractions);
+                    foreach ($fractions as $bid => $frac) {
+                        if ($remainder <= 0) break;
+                        $cap = isset($besoinRestantSimule[$bid]) ? $besoinRestantSimule[$bid] : null;
+                        if ($cap === null) {
+                            foreach ($besoins as $b) if ($b['id'] == $bid) { $cap = (int)$b['quantite_restante']; break; }
+                        }
+                        $current = $allocs[$bid];
+                        if ($current < $cap) { $allocs[$bid] = $current + 1; $remainder -= 1; }
+                    }
+                }
 
-                // Mettre à jour uniquement en mémoire
-                $besoinRestantSimule[$besoin['id']] = $restant - $a_attribuer;
-                $disponible -= $a_attribuer;
+                foreach ($allocs as $bid => $a_attribuer) {
+                    if ($a_attribuer <= 0) continue;
+                    $restAvant = isset($besoinRestantSimule[$bid]) ? $besoinRestantSimule[$bid] : null;
+                    if ($restAvant === null) {
+                        foreach ($besoins as $b) if ($b['id'] == $bid) { $restAvant = (int)$b['quantite_restante']; $lib = $b['libelle']; $ville = $b['ville_nom']; break; }
+                    } else {
+                        foreach ($besoins as $b) if ($b['id'] == $bid) { $lib = $b['libelle']; $ville = $b['ville_nom']; break; }
+                    }
+                    $besoinRestantSimule[$bid] = max(0, $restAvant - $a_attribuer);
+                    $disponible -= $a_attribuer;
+                    $log[] = ['don' => $don['nom'], 'besoin' => $lib, 'ville' => $ville, 'quantite' => $a_attribuer];
+                    if ($disponible <= 0) break;
+                }
 
-                $log[] = [
-                    'don' => $don['nom'],
-                    'besoin' => $besoin['libelle'],
-                    'ville' => $besoin['ville_nom'],
-                    'quantite' => $a_attribuer
-                ];
+            } else {
+                foreach ($besoins as $besoin) {
+                    if ($disponible <= 0) break;
+                    $id = $besoin['id'];
+                    $restant = isset($besoinRestantSimule[$id]) ? $besoinRestantSimule[$id] : (int)$besoin['quantite_restante'];
+                    if ($restant <= 0) continue;
+                    $a_attribuer = min($disponible, $restant);
+                    $besoinRestantSimule[$id] = $restant - $a_attribuer;
+                    $disponible -= $a_attribuer;
+                    $log[] = ['don' => $don['nom'], 'besoin' => $besoin['libelle'], 'ville' => $besoin['ville_nom'], 'quantite' => $a_attribuer];
+                }
             }
         }
 

@@ -73,18 +73,21 @@ class DistributionController {
 
     public function dispatch() {
         $mode = Flight::request()->query->mode ?: 'validate';
+        $strategy = Flight::request()->query->strategy ?: 'fifo'; // fifo | proportion | smallest
 
         if ($mode === 'simulate') {
-            $log = $this->distModel->simulateDispatch();
+            $log = $this->distModel->simulateDispatch($strategy);
             Flight::render('pages/distributions/dispatch_result', [
                 'log' => $log,
-                'mode' => 'simulated'
+                'mode' => 'simulated',
+                'strategy' => $strategy
             ]);
         } else {
-            $log = $this->distModel->dispatchDons();
+            $log = $this->distModel->dispatchDons($strategy);
             Flight::render('pages/distributions/dispatch_result', [
                 'log' => $log,
-                'mode' => 'validated'
+                'mode' => 'validated',
+                'strategy' => $strategy
             ]);
         }
     }
