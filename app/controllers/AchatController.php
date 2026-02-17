@@ -28,7 +28,7 @@ class AchatController {
         $villeId = Flight::request()->query->ville_id ?: null;
         $achats = $this->achatModel->getAll($villeId);
         $stats = $this->achatModel->getStats();
-        $argentDisponible = $this->achatModel->makavolaDisponible();
+        $argentDisponible = $this->achatModel->volaDisponible();
         $villes = $this->villeModel->getAll();
 
         Flight::render('pages/achats/index', [
@@ -53,7 +53,7 @@ class AchatController {
             return $b['quantite_restante'] > 0 && strtolower($b['categorie_nom']) !== 'argent';
         });
 
-        $argentDisponible = $this->achatModel->makavolaDisponible();
+        $argentDisponible = $this->achatModel->volaDisponible();
         $fraisPourcent = Flight::get('frais_achat');
 
         Flight::render('pages/achats/form', [
@@ -110,7 +110,7 @@ class AchatController {
         // Vérifier le montant disponible
         $montantHt = $prixUnitaire * $quantite;
         $montantTotal = $montantHt + ($montantHt * $fraisPourcent / 100);
-        $argentDisponible = $this->achatModel->makavolaDisponible();
+        $argentDisponible = $this->achatModel->volaDisponible();
 
         if ($montantTotal > $argentDisponible) {
             Flight::redirect('/achats/create?besoin_id=' . $besoinId . '&error=argent_insuffisant');
