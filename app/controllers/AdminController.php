@@ -13,8 +13,6 @@ class AdminController {
 
     /**
      * Réinitialiser la base de données à l'état de `database2.sql`.
-     * Exécute les instructions SQL du fichier en ignorant les commentaires
-     * et les commandes CREATE DATABASE / USE pour éviter les erreurs.
      */
     public function resetData() {
         $file = __DIR__ . '/../../database2.sql';
