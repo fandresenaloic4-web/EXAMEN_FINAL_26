@@ -48,7 +48,7 @@ class AchatController {
         $error = Flight::request()->query->error ?: null;
 
         // Besoins éligibles: quantite_restante > 0 et catégorie != argent
-        $besoins = $this->besoinModel->getAll();
+        $besoins = $this->besoinModel->makaazyrehetra();
         $besoinsEligibles = array_filter($besoins, function($b) {
             return $b['quantite_restante'] > 0 && strtolower($b['categorie_nom']) !== 'argent';
         });

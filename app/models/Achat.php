@@ -15,7 +15,7 @@ class Achat {
     /**
      * Récupérer tous les achats avec détails besoin et ville
      */
-    public function getAll($villeId = null) {
+    public function makaazyrehetra($villeId = null) {
         $sql = "SELECT a.*, b.libelle AS besoin_libelle, b.categorie_id,
                        v.nom AS ville_nom, c.nom AS categorie_nom
                 FROM achat a
