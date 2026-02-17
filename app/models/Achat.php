@@ -90,7 +90,7 @@ class Achat {
     /**
      * Montant total des dons en argent disponibles pour achats
      */
-    public function getMontantArgentDisponible() {
+    public function makavolaDisponible() {
         // Total des dons en argent
         $sql = "SELECT COALESCE(SUM(d.quantite), 0) AS total_argent
                 FROM don d
