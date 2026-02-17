@@ -118,7 +118,7 @@ class AchatController {
         }
 
         // Créer l'achat
-        $this->achatModel->inserer($besoinId, $quantite, $prixUnitaire, $fraisPourcent);
+        $this->achatModel->inserez($besoinId, $quantite, $prixUnitaire, $fraisPourcent);
 
         // Mettre à jour quantité restante du besoin
         $this->besoinModel->updateQuantiteRestante($besoinId, $quantite);
