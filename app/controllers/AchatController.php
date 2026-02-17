@@ -29,7 +29,7 @@ class AchatController {
         $achats = $this->achatModel->getAll($villeId);
         $stats = $this->achatModel->getStats();
         $argentDisponible = $this->achatModel->volaDisponible();
-        $villes = $this->villeModel->getAll();
+        $villes = $this->villeModel->makazyrehetre();
 
         Flight::render('pages/achats/index', [
             'achats' => $achats,
@@ -48,7 +48,7 @@ class AchatController {
         $error = Flight::request()->query->error ?: null;
 
         // Besoins éligibles: quantite_restante > 0 et catégorie != argent
-        $besoins = $this->besoinModel->makaazyrehetra();
+        $besoins = $this->besoinModel->makazyrehetra();
         $besoinsEligibles = array_filter($besoins, function($b) {
             return $b['quantite_restante'] > 0 && strtolower($b['categorie_nom']) !== 'argent';
         });
