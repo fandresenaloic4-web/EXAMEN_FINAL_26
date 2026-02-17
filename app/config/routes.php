@@ -10,6 +10,7 @@ use app\controllers\DistributionController;
 use app\controllers\VilleController;
 use app\controllers\AchatController;
 use app\controllers\RecapController;
+use app\controllers\AdminController;
 
 
 /** 
@@ -112,6 +113,9 @@ Flight::route('GET /achats/delete/@id', [AchatController::class, 'delete']);
 // RÉCAPITULATION (V2)
 // ========================================
 Flight::route('GET /recap', [RecapController::class, 'index']);
+
+// ADMIN: réinitialisation des données (réimporte database2.sql)
+Flight::route('POST /admin/reset', [AdminController::class, 'resetData']);
 
 // ========================================
 // API V2

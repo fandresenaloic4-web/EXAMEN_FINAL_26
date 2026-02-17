@@ -29,10 +29,16 @@ $progressMontant = $montantTotal > 0 ? round(($montantCouvert / $montantTotal) *
             <p class="breadcrumb-text">Vue d'ensemble de la gestion des catastrophes</p>
         </div>
     </div>
-    <div>
+    <div class="d-flex gap-2">
         <a href="<?php echo url('/distributions/dispatch'); ?>" class="btn btn-warning-custom" data-bs-toggle="tooltip" title="Distribuer automatiquement les dons aux besoins">
             <i class="bi bi-lightning-charge"></i> Dispatch automatique
         </a>
+
+        <form method="POST" action="<?php echo url('/admin/reset'); ?>" onsubmit="return confirm('Confirmer la réinitialisation des données ? Toutes les distributions seront supprimées et les données seront remises à l\'état initial.');">
+            <button type="submit" class="btn btn-danger-custom" data-bs-toggle="tooltip" title="Réinitialiser les données">
+                <i class="bi bi-arrow-counterclockwise"></i> Réinitialiser les données
+            </button>
+        </form>
     </div>
 </div>
 
